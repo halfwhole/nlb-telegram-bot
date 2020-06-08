@@ -2,7 +2,7 @@ import logging
 import psycopg2
 import sqlalchemy as sa
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
-from config import token
+from config import token, postgres_user, postgres_password, postgres_db
 
 ## Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -76,10 +76,8 @@ def main():
 
 
 if __name__ == '__main__':
-    # conn = psycopg2.connect(user='postgres', password='postgres', host='db', port='5432')
-    # cursor = conn.cursor()
-
-    conn = sa.create_engine('postgresql+psycopg2://postgres:postgres@db:5432/nlb')
+    conn_string = 'postgresql+psycopg2://%s:%s@db:5432/%s' % (postgres_user, postgres_password, postgres_db)
+    conn = sa.create_engine(conn_string)
     print(conn)
 
     main()

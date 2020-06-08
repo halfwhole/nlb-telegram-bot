@@ -1,4 +1,4 @@
-CONFIG_FILE = 'config.txt'
+CONFIG_FILE = '.env'
 
 configs = {}
 with open(CONFIG_FILE, 'r') as f:
@@ -8,3 +8,6 @@ with open(CONFIG_FILE, 'r') as f:
         configs[key] = val
 
 token = configs['TOKEN']
+postgres_user = configs['POSTGRES_USER']
+postgres_password = configs['POSTGRES_PASSWORD']
+postgres_db = configs['POSTGRES_DB']

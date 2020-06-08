@@ -2,11 +2,20 @@
 
 ## Setting Up
 
-Get your API token from the `@BotFather` and copy it to a new file called `config.txt`
-in the top-level project directory:
+Create a new file `.env` in the top-level project directory with the
+following configurations:
+
+- `TOKEN`: Telegram API token from the `@BotFather`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_DB`
 
 ```
+# Example .env file
 TOKEN = <your-token-here>
+POSTGRES_USER = postgres
+POSTGRES_PASSWORD = postgres
+POSTGRES_DB = nlb
 ```
 
 #### Setting Up with Docker (recommended)
@@ -23,7 +32,7 @@ docker-compose up [-d]
 This will start two containers, one for the telegram bot and one for the postgres database.
 
 To run `psql` in the postgres container, use
-`docker exec -it <container-name> psql -U postgres`.
+`docker exec -it <container-name> psql -U <postgres-user>`.
 
 - `\l` to show all databases
 - `\dt` to show all tables
