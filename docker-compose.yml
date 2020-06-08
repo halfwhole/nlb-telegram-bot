@@ -4,7 +4,10 @@ services:
     build: .
     volumes:
       - .:/nlb-telegram-bot
-    command: pipenv run python __init__.py
+    command: pipenv run python -u __init__.py
+    depends_on:
+      - db
+    restart: on-failure
   db:
     image: postgres:13-alpine
     volumes:
