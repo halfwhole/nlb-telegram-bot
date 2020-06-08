@@ -9,6 +9,7 @@ verify_ssl = true
 python-telegram-bot = "*"
 psycopg2-binary = "*"
 sqlalchemy = "*"
+alembic = "*"
 
 [requires]
 python_version = "3.6"

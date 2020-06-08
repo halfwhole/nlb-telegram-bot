@@ -1,5 +1,6 @@
 import logging
 import psycopg2
+import sqlalchemy as sa
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 from config import token
 
@@ -75,6 +76,10 @@ def main():
 
 
 if __name__ == '__main__':
-    conn = psycopg2.connect(user='postgres', password='postgres', host='db', port='5432')
-    cursor = conn.cursor()
+    # conn = psycopg2.connect(user='postgres', password='postgres', host='db', port='5432')
+    # cursor = conn.cursor()
+
+    conn = sa.create_engine('postgresql+psycopg2://postgres:postgres@db:5432/nlb')
+    print(conn)
+
     main()
