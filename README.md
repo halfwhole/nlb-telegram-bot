@@ -2,6 +2,8 @@
 
 ## Setting Up
 
+#### Environment file
+
 Create a new file `.env` in the top-level project directory with the
 following configurations:
 
@@ -18,7 +20,7 @@ POSTGRES_PASSWORD = postgres
 POSTGRES_DB = nlb
 ```
 
-#### Setting Up with Docker (recommended)
+#### Docker
 
 Both `docker` and `docker-compose` will need to be installed.
 
@@ -29,25 +31,12 @@ telegram bot, and one for the postgres database:
 docker-compose up [-d]
 ```
 
-To access the python bot container, use `docker exec -it <container-name> bash`.
+- To access the python bot container, use `docker exec -it <container-name> bash`.
+- To access postgres, use `docker exec -it <container-name> psql -U <postgres-user> nlb`.
 
-To access postgres, use `docker exec -it <container-name> psql -U <postgres-user> nlb`.
+## Using Alembic
 
-- `\l` to show all databases
-- `\dt` to show all tables
-
-#### Setting Up Locally
-
-No guarantees that this will work with postgres. You're own your own.
-
-``` sh
-pipenv install
-pipenv run python __init__.py
-```
-
-## Using `alembic`
-
-For more details, see the [alembic tutorial](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
+For more details, see the [Alembic tutorial](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
 
 #### Creating a migration
 
@@ -61,16 +50,16 @@ Remember to run the following commands from within the python docker container,
 if you're using one:
 
 ``` sh
-pipenv run alembic upgrade head # Upgrade to latest version
-pipenv run alembic upgrade +1   # Upgrade by 1 migration
-pipenv run alembic downgrade -1 # Downgrade by 1 migration
+pipenv run alembic upgrade head  # Upgrade to latest version
+pipenv run alembic upgrade +1    # Upgrade by 1 migration
+pipenv run alembic downgrade -1  # Downgrade by 1 migration
 ```
 
-## Using `sqlalchemy`
+## Using SQLAlchemy
 
-For more details, see the [sqlalchemy tutorial](https://docs.sqlalchemy.org/en/13/orm/tutorial.html).
+For more details, see the [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/13/orm/tutorial.html).
 
-Here's a sampling of what you can do with `sqlalchemy`:
+Here's a sampling of what you can do with SQLAlchemy:
 
 ``` python
 book = Book(bid=123, user_id=1337, title='TITLE', author='AUTHOR')
