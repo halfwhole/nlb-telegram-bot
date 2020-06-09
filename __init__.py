@@ -1,8 +1,9 @@
 import logging
 import psycopg2
-import sqlalchemy as sa
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
-from config import token, postgres_user, postgres_password, postgres_db
+from config import conn_string
 
 ## Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -15,6 +16,7 @@ ADD_CONTINUE = range(1)
 ## Command handlers
 def start(update, context):
     update.message.reply_text('Hi!')
+    print(update.message.from_user['id'])
 
 def help(update, context):
     help_message = """
@@ -76,8 +78,8 @@ def main():
 
 
 if __name__ == '__main__':
-    conn_string = 'postgresql+psycopg2://%s:%s@db:5432/%s' % (postgres_user, postgres_password, postgres_db)
-    conn = sa.create_engine(conn_string)
-    print(conn)
-
+    engine = create_engine(conn_string)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    print(engine)
     main()

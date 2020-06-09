@@ -11,3 +11,4 @@ token = configs['TOKEN']
 postgres_user = configs['POSTGRES_USER']
 postgres_password = configs['POSTGRES_PASSWORD']
 postgres_db = configs['POSTGRES_DB']
+conn_string = 'postgresql+psycopg2://%s:%s@db:5432/%s' % (postgres_user, postgres_password, postgres_db)

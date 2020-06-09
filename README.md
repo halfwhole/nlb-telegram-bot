@@ -20,19 +20,18 @@ POSTGRES_DB = nlb
 
 #### Setting Up with Docker (recommended)
 
-Install `docker-ce` and `docker-compose` with your preferred package manager,
-then run `docker-compose up`:
+Both `docker` and `docker-compose` will need to be installed.
+
+Run `docker-compose up`, which will start two containers&mdash;one for for the python
+telegram bot, and one for the postgres database:
 
 ``` sh
-sudo apt install docker-ce
-sudo apt install docker-compose
 docker-compose up [-d]
 ```
 
-This will start two containers, one for the telegram bot and one for the postgres database.
+To access the python bot container, use `docker exec -it <container-name> bash`.
 
-To run `psql` in the postgres container, use
-`docker exec -it <container-name> psql -U <postgres-user>`.
+To access postgres, use `docker exec -it <container-name> psql -U <postgres-user> nlb`.
 
 - `\l` to show all databases
 - `\dt` to show all tables
@@ -45,3 +44,66 @@ No guarantees that this will work with postgres. You're own your own.
 pipenv install
 pipenv run python __init__.py
 ```
+
+## Using `alembic`
+
+For more details, see the [alembic tutorial](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
+
+#### Creating a migration
+
+``` sh
+pipenv run alembic revision -m "Create a new migration"
+```
+
+#### Upgrading/downgrading migrations
+
+Remember to run the following commands from within the python docker container,
+if you're using one:
+
+``` sh
+pipenv run alembic upgrade head # Upgrade to latest version
+pipenv run alembic upgrade +1   # Upgrade by 1 migration
+pipenv run alembic downgrade -1 # Downgrade by 1 migration
+```
+
+## Using `sqlalchemy`
+
+For more details, see the [sqlalchemy tutorial](https://docs.sqlalchemy.org/en/13/orm/tutorial.html).
+
+Here's a sampling of what you can do with `sqlalchemy`:
+
+``` python
+book = Book(bid=123, user_id=1337, title='TITLE', author='AUTHOR')
+session.add(book)
+session.commit()
+session.delete(book)
+session.rollback()
+
+session.query(Book).all()
+session.query(Book).first()
+
+availability = Availability(
+    book_id=book.id,
+    branch_name='BRANCH',
+    call_number='CALL',
+    status_desc='STATUS',
+    shelf_location='SHELF'
+)
+session.add(availability)
+session.commit()
+
+book.availabilities
+# [<Availability(id=1, book_id=1, branch_name='BRANCH', status_desc='STATUS')]
+availability.book
+# <Book(id=1, bid=123, user_id=1337, title='TITLE', author='AUTHOR')
+```
+
+#### Running the python console
+
+Again, the console should be run from within the python docker container:
+
+``` sh
+pipenv run python -i models.py
+```
+
+All of the above python code can be executed as-is from within the console.
