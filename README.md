@@ -96,3 +96,12 @@ pipenv run python -i models.py
 ```
 
 All of the above python code can be executed as-is from within the console.
+
+## Developer notes
+
+If you need to install or uninstall python packages:
+
+``` sh
+pipenv [un]install <package>
+docker-compose build
+```
