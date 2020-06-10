@@ -24,7 +24,7 @@ class Availability(Base):
     __tablename__ = 'availability'
 
     id = Column(Integer, primary_key=True)
-    book_id = Column(Integer, ForeignKey('book.id')) # FOREIGN KEY
+    book_id = Column(Integer, ForeignKey('book.id'))
     branch_name = Column(String(200))
     call_number = Column(String(200))
     status_desc = Column(String(200))
