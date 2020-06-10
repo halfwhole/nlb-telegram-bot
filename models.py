@@ -2,9 +2,12 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
-## https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/basic_use.html
-
 Base = declarative_base()
+
+## NOTE: A potential source of confusion is the difference between Book's id and bid.
+## - Book's id is the primary key assigned by this database.
+## - Book's bid is that which is used to identify NLB books, as per the catalogue URL.
+## - Availability's book_id refers to the Book's id, not bid.
 
 class Book(Base):
     __tablename__ = 'book'

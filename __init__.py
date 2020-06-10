@@ -1,10 +1,8 @@
 import logging
 import psycopg2
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
-from config import token, conn_string
+from config import token
 from handlers.start_handler import start_handler
 from handlers.help_handler import help_handler
 from handlers.add_handler import add_handler
@@ -31,12 +29,9 @@ def main():
     dp.add_error_handler(error)
 
     updater.start_polling()
+    print("Bot is up and running")
     updater.idle()
 
 
 if __name__ == '__main__':
-    engine = create_engine(conn_string)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    print(engine)
     main()
