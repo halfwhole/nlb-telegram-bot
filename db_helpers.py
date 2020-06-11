@@ -34,16 +34,15 @@ def refresh_availabilities_db(book_id, availability_info):
 
 ## Deletes a Book and its Availabilities, returning the deleted book's ID
 def delete_book_and_availabilities(bid, user_id):
-    session = _create_session()
-    book = _get_book(bid, user_id)
-    if book is None:
+    if _get_book(bid, user_id) is None:
         raise LookupError('Book with bid=%d and user_id=%d does not exist' % (bid, user_id))
-    book_id = book.id
-    _delete_availabilities(book_id)
-    session.delete(book)
-    session.commit()
-    session.close()
+    book_id = _delete_book_cascade(bid, user_id)
     return book_id
+
+## TODO: Temporary solution to list book information, just gives bids, titles, and authors for now. Modify as necessary
+def get_book_info(user_id):
+    books = _get_books_by_user_id(user_id)
+    return [{ 'bid': book.bid, 'title': book.title, 'author': book.author } for book in books]
 
 #####################
 ## PRIVATE METHODS ##
@@ -66,11 +65,27 @@ def _create_book(bid, user_id, title, author):
     session.close()
     return book_id
 
+def _delete_book_cascade(bid, user_id):
+    session = _create_session()
+    book = _get_book(bid, user_id)
+    book_id = book.id
+    _delete_availabilities(book_id)
+    session.delete(book)
+    session.commit()
+    session.close()
+    return book_id
+
 def _get_book(bid, user_id):
     session = _create_session()
     book = session.query(Book).filter(Book.bid == bid).filter(Book.user_id == user_id).first()
     session.close()
     return book
+
+def _get_books_by_user_id(user_id):
+    session = _create_session()
+    books = session.query(Book).filter(Book.user_id == user_id).all()
+    session.close()
+    return books
 
 ## Creates an Availability, returning its ID
 def _create_availability(book_id, branch_name, call_number, status_desc, shelf_location):

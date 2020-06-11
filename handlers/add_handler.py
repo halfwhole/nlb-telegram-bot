@@ -3,7 +3,6 @@ from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Fi
 from nlb import get_title_details, get_availability_info
 from db_helpers import is_book_present, add_book_availabilities_db
 
-## States
 ADD_CONTINUE = range(1)
 
 ADD_BOOK_START_STRING = 'What book ID would you like to add next? Use /end to finish.'

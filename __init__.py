@@ -5,6 +5,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Conve
 from config import token
 from handlers.start_handler import start_handler
 from handlers.help_handler import help_handler
+from handlers.list_handler import list_handler
 from handlers.add_handler import add_handler
 from handlers.delete_handler import delete_handler
 from handlers.fallback_handler import fallback_handler
@@ -24,6 +25,7 @@ def main():
 
     dp.add_handler(start_handler)
     dp.add_handler(help_handler)
+    dp.add_handler(list_handler)
     dp.add_handler(add_handler)
     dp.add_handler(delete_handler)
 
