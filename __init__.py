@@ -8,6 +8,7 @@ from handlers.help_handler import help_handler
 from handlers.list_handler import list_handler
 from handlers.add_handler import add_handler
 from handlers.delete_handler import delete_handler
+from handlers.refresh_handler import refresh_handler
 from handlers.fallback_handler import fallback_handler
 
 ## Enable logging
@@ -28,6 +29,8 @@ def main():
     dp.add_handler(list_handler)
     dp.add_handler(add_handler)
     dp.add_handler(delete_handler)
+
+    dp.add_handler(refresh_handler)
 
     dp.add_handler(fallback_handler)
     dp.add_error_handler(error)

@@ -8,6 +8,7 @@ def help(update, context):
 - /add
 - /delete
 - /list
+    You can find me at https://github.com/halfwhole/nlb-telegram-bot.
     """
     update.message.reply_text(help_message)
 

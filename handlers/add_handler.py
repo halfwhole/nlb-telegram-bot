@@ -32,6 +32,9 @@ def add_continue(update, context):
 
     try:
         update.message.reply_text(PLEASE_WAIT_STRING)
+        ## TODO: send_chat_action TYPING?
+        ## TODO: make this non-blocking and async.
+        ## What if other users want to do other things in the meantime?
         title_details = get_title_details(bid)
         availability_info = get_availability_info(bid)
     except Exception as e:
