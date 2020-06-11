@@ -7,8 +7,8 @@ ADD_CONTINUE = range(1)
 
 ADD_BOOK_START_STRING = 'What book ID would you like to add next? Use /end to finish.'
 ADDED_BOOK_STRING = 'Added "%s".'
-INVALID_BID_STRING = 'That book ID was invalid. Please try again, or use /end to finish.'
-BOOK_EXISTS_STRING = 'That book already exists. Please try again, or use /end to finish.'
+INVALID_BID_STRING = 'That book ID was invalid.\nPlease try again, or use /end to finish.'
+BOOK_EXISTS_STRING = 'That book already exists.\nPlease try again, or use /end to finish.'
 PLEASE_WAIT_STRING = 'Please wait while I gather the book information...'
 END_STRING = "Books added, you're done!"
 

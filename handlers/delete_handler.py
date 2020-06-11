@@ -4,8 +4,8 @@ from db_helpers import delete_book_and_availabilities, get_book_title_details, i
 
 DELETE_CONTINUE = range(1)
 
-INVALID_BID_STRING = 'That book ID was invalid. Please try again, or use /end to finish.'
-BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists. Please try again, or use /end to finish.'
+INVALID_BID_STRING = 'That book ID was invalid.\nPlease try again, or use /end to finish.'
+BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists.\nPlease try again, or use /end to finish.'
 DELETE_BOOK_START_STRING = 'What book would you like to delete next? Use /end to finish.'
 DELETED_BOOK_STRING = 'Deleted "%s".'
 END_STRING = "Books deleted, you're done!"
