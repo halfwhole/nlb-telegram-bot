@@ -6,6 +6,8 @@ def help(update, context):
 - /start
 - /help
 - /add
+- /delete
+- /list
     """
     update.message.reply_text(help_message)
 
