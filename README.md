@@ -2,9 +2,9 @@
 
 ## Setting Up
 
-#### Environment file
+### Environment file
 
-Create a new file `.env` in the top-level project directory with the
+Create a new file `.env` in the top-level project directory, with the
 following configurations:
 
 - `TOKEN`: Telegram API token from the `@BotFather`
@@ -13,49 +13,52 @@ following configurations:
 - `POSTGRES_DB`
 
 ```
-# Example .env file
+## .env
 TOKEN=<your-token-here>
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=nlb
 ```
 
-#### Docker
+### Docker
 
-Both `docker` and `docker-compose` will need to be installed.
-
-Run `docker-compose up`, which will start two containers&mdash;one for for the python
-telegram bot, and one for the postgres database:
+Both `docker` and `docker-compose` will need to be installed. Run
+`docker-compose up` to serve the telegram bot and database.
 
 ``` sh
-docker-compose up [-d]
+$ docker-compose up
 ```
 
-- To access the python bot container, use `docker exec -it <container-name> bash`.
-- To access postgres, use `docker exec -it <container-name> psql -U <postgres-user> nlb`.
+## Developer Notes
 
-## Using Alembic
+### Accessing the containers
+
+Commands should typically be run from within the containers.
+
+- To access the python bot container, run `docker exec -it <python-container> bash`.
+- To access postgres, run `docker exec -it <postgres-container> psql -U <postgres-user> nlb`.
+
+### Using Alembic
 
 For more details, see the [Alembic tutorial](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
 
 #### Creating a migration
 
 ``` sh
-pipenv run alembic revision -m "Create a new migration"
+$ pipenv run alembic revision -m "Create a new migration"
 ```
 
 #### Upgrading/downgrading migrations
 
-Remember to run the following commands from within the python docker container,
-if you're using one:
+Remember to run these commands from *within* the python docker container:
 
 ``` sh
-pipenv run alembic upgrade head  # Upgrade to latest version
-pipenv run alembic upgrade +1    # Upgrade by 1 migration
-pipenv run alembic downgrade -1  # Downgrade by 1 migration
+$ pipenv run alembic upgrade head  # Upgrade to latest version
+$ pipenv run alembic upgrade +1    # Upgrade by 1 migration
+$ pipenv run alembic downgrade -1  # Downgrade by 1 migration
 ```
 
-## Using SQLAlchemy
+### Using SQLAlchemy
 
 For more details, see the [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/13/orm/tutorial.html).
 
@@ -87,21 +90,21 @@ availability.book
 # <Book(id=1, bid=123, user_id=1337, title='TITLE', author='AUTHOR')
 ```
 
-#### Running the python console
+### Running the python console
 
-Again, the console should be run from within the python docker container:
+Again, the console should be run from *within* the python docker container:
 
 ``` sh
-pipenv run python -i models.py
+$ pipenv run python -i models.py
 ```
 
-All of the above python code can be executed as-is from within the console.
+This loads the session and models, allowing you to run the code as given in the SQLAlchemy section.
 
-## Developer notes
+### Installing/uninstalling packages
 
-If you need to install or uninstall python packages:
+To install or uninstall python packages, run these from *outside* the container:
 
 ``` sh
-pipenv [un]install <package>
-docker-compose build
+$ pipenv [un]install <package>
+$ docker-compose build
 ```
