@@ -1,21 +1,50 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
-from telegram.ext import CommandHandler
+from telegram.ext import CommandHandler, CallbackQueryHandler
 
 from db_helpers import get_book_info
 
+
 BOOKS_PREFIX = '*Books*\n'
 NO_BOOKS_STRING = 'You have no books!\nUse /add to start adding new books.'
+REFRESHED_NOTIFICATION = 'Refreshed!'
+REFRESH_CALLBACK_DATA = 'refresh'
+
 
 def lst(update, context):
     user_id = int(update.message.from_user['id'])
+    text = _get_books_text(user_id)
+    reply_markup = _get_reply_markup()
+
+    update.message.reply_text(text, reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN_V2)
+
+def refresh(update, context):
+    ## TODO: REFRESH --- db (get all book_id) >> nlb (get all availability_info) >> db (update all availabilities)
+    query = update.callback_query
+    user_id = int(query.message.chat['id'])
+    text = _get_books_text(user_id)
+    reply_markup = _get_reply_markup()
+
+    try:
+        query.edit_message_text(text=text, reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN_V2)
+    except Exception:
+        pass
+    finally:
+        query.answer(REFRESHED_NOTIFICATION)
+
+
+def _get_books_text(user_id):
     book_info = get_book_info(user_id)
     if not book_info:
         text = NO_BOOKS_STRING
     else:
         text = BOOKS_PREFIX + '\n'.join('• %d: %s' % (bi['bid'], bi['title']) for bi in book_info)
+    return text
 
-    keyboard = [[InlineKeyboardButton('Refresh', callback_data='refresh')]]
+def _get_reply_markup():
+    keyboard = [[InlineKeyboardButton('Refresh', callback_data=REFRESH_CALLBACK_DATA)]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text(text, reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN_V2)
+    return reply_markup
+
 
 list_handler = CommandHandler('list', lst)
+refresh_handler = CallbackQueryHandler(refresh, pattern='^' + REFRESH_CALLBACK_DATA + '$')

@@ -10,6 +10,7 @@ def help(update, context):
 - /list
     You can find me at https://github.com/halfwhole/nlb-telegram-bot.
     """
+    ## TODO: separate out obnoxious github link into separate credits/source/contributing command
     update.message.reply_text(help_message)
 
 help_handler = CommandHandler('help', help)
