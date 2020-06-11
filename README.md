@@ -14,10 +14,10 @@ following configurations:
 
 ```
 # Example .env file
-TOKEN = <your-token-here>
-POSTGRES_USER = postgres
-POSTGRES_PASSWORD = postgres
-POSTGRES_DB = nlb
+TOKEN=<your-token-here>
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=nlb
 ```
 
 #### Docker
