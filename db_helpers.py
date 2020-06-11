@@ -6,12 +6,18 @@ import time
 from config import conn_string
 from models import Book, Availability
 
+## TODO: Refactor into models.py and STANDARDISE NAMING (_db suffix)
+
 def is_book_present(bid, user_id):
     return _get_book(bid, user_id) is not None
 
+def get_book_title_details(bid, user_id):
+    book = _get_book(bid, user_id)
+    return { 'title': book.title, 'author': book.author }
+
 def add_book_availabilities_db(bid, user_id, title_details, availability_info):
     if _get_book(bid, user_id):
-        raise ValueError('Book already exists')
+        raise ValueError('Book with bid=%d and user_id=%d already exists' % (bid, user_id))
     title = title_details['title']
     author = title_details['author']
     book_id = _create_book(bid, user_id, title, author)
@@ -25,6 +31,23 @@ def refresh_availabilities_db(book_id, availability_info):
         status_desc = availability['status_desc']
         shelf_location = availability['shelf_location']
         _create_availability(book_id, branch_name, call_number, status_desc, shelf_location)
+
+## Deletes a Book and its Availabilities, returning the deleted book's ID
+def delete_book_and_availabilities(bid, user_id):
+    session = _create_session()
+    book = _get_book(bid, user_id)
+    if book is None:
+        raise LookupError('Book with bid=%d and user_id=%d does not exist' % (bid, user_id))
+    book_id = book.id
+    _delete_availabilities(book_id)
+    session.delete(book)
+    session.commit()
+    session.close()
+    return book_id
+
+#####################
+## PRIVATE METHODS ##
+#####################
 
 ## Remember to call session.close() after you finish!
 def _create_session():

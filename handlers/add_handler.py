@@ -6,17 +6,17 @@ from db_helpers import is_book_present, add_book_availabilities_db
 ## States
 ADD_CONTINUE = range(1)
 
-ADD_BOOK_STRING = 'What book ID would you like to add next? Use /end to finish.'
+ADD_BOOK_START_STRING = 'What book ID would you like to add next? Use /end to finish.'
 ADDED_BOOK_STRING = 'Added "%s".'
 INVALID_BID_STRING = 'That book ID was invalid. Please try again, or use /end to finish.'
 BOOK_EXISTS_STRING = 'That book already exists. Please try again, or use /end to finish.'
 PLEASE_WAIT_STRING = 'Please wait while I gather the book information...'
-END_STRING = 'Books added, exiting.'
+END_STRING = "Books added, you're done!"
 
 ## TODO: add tons of logging details!
 
 def add_start(update, context):
-    update.message.reply_text(ADD_BOOK_STRING)
+    update.message.reply_text(ADD_BOOK_START_STRING)
     return ADD_CONTINUE
 
 def add_continue(update, context):
@@ -27,7 +27,6 @@ def add_continue(update, context):
 
     bid = int(text)
     user_id = int(update.message.from_user['id'])
-
     if is_book_present(bid, user_id):
         update.message.reply_text(BOOK_EXISTS_STRING)
         return
@@ -42,7 +41,7 @@ def add_continue(update, context):
 
     title = title_details['title']
     add_book_availabilities_db(bid, user_id, title_details, availability_info)
-    update.message.reply_text(ADDED_BOOK_STRING % title + '\n' + ADD_BOOK_STRING)
+    update.message.reply_text(ADDED_BOOK_STRING % title + '\n' + ADD_BOOK_START_STRING)
 
     return ADD_CONTINUE
 
