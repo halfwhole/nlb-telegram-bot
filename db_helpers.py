@@ -94,7 +94,8 @@ def _create_availability(book_id, branch_name, call_number, status_desc, shelf_l
         book_id=book_id,
         branch_name=branch_name,
         call_number=call_number,
-        status_desc=status_desc
+        status_desc=status_desc,
+        shelf_location=shelf_location
     )
     session.add(availability)
     session.commit()
