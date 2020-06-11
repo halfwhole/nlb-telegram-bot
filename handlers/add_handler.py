@@ -1,7 +1,7 @@
 from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Filters
 
 from nlb import get_title_details, get_availability_info
-from db_helpers import is_book_present, add_book_availabilities_db
+from db_helpers import is_book_present, add_book_availabilities
 
 ADD_CONTINUE = range(1)
 
@@ -39,7 +39,7 @@ def add_continue(update, context):
         return
 
     title = title_details['title']
-    add_book_availabilities_db(bid, user_id, title_details, availability_info)
+    add_book_availabilities(bid, user_id, title_details, availability_info)
     update.message.reply_text(ADDED_BOOK_STRING % title + '\n' + ADD_BOOK_START_STRING)
 
     return ADD_CONTINUE
