@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
       - .:/nlb-telegram-bot
+    # TODO: `alembic upgrade head` as well
     command: pipenv run python -u __init__.py
     depends_on:
       - db
