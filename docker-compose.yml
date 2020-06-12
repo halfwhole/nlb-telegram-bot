@@ -4,10 +4,11 @@ services:
     build: .
     volumes:
       - .:/nlb-telegram-bot
-    # TODO: `alembic upgrade head` as well
+    # TODO: pipenv run alembic upgrade head && pipenv run python -u __init__.py
     command: pipenv run python -u __init__.py
-    depends_on:
-      - db
+    # TODO: commented for speed, uncomment for stability
+    # depends_on:
+    #   - db
     restart: on-failure
   db:
     image: postgres:13-alpine

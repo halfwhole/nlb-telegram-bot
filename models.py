@@ -73,6 +73,13 @@ class Availability(Base):
     shelf_location = Column(String(200))
 
     @staticmethod
+    def get_all_by_book_id(book_id):
+        session = _create_session()
+        availabilities = session.query(Availability).filter(Availability.book_id == book_id).all()
+        session.close()
+        return availabilities
+
+    @staticmethod
     def create(book_id, branch_name, call_number, status_desc, shelf_location):
         session = _create_session()
         availability = Availability(
