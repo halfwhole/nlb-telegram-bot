@@ -8,6 +8,7 @@ from handlers.help_handler import help_handler
 from handlers.list_handler import list_handler, refresh_handler
 from handlers.add_handler import add_handler
 from handlers.delete_handler import delete_handler
+from handlers.view_handler import view_handler
 from handlers.fallback_handler import fallback_handler
 
 ## Enable logging
@@ -15,7 +16,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-## Error handlers
+## Error handling
 def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
@@ -29,6 +30,7 @@ def main():
     dp.add_handler(refresh_handler)
     dp.add_handler(add_handler)
     dp.add_handler(delete_handler)
+    dp.add_handler(view_handler)
 
     dp.add_handler(fallback_handler)
     dp.add_error_handler(error)

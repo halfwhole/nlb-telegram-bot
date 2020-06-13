@@ -1,6 +1,8 @@
 from models import Book, Availability
 from nlb import get_availability_info
 
+CHECK_AVAILABLE_STRING = 'AVAILABLE'
+
 def is_book_present(bid, user_id):
     return Book.get(bid, user_id) is not None
 
@@ -8,10 +10,27 @@ def get_book_title_details(bid, user_id):
     book = Book.get(bid, user_id)
     return { 'title': book.title, 'author': book.author }
 
+def get_book_availabilities(bid, user_id):
+    def make_availability(availability):
+        return {
+            'is_available': _is_status_desc_available(availability.status_desc),
+            'branch_name': availability.branch_name,
+            'call_number': availability.call_number,
+            'status_desc': availability.status_desc,
+            'shelf_location': availability.shelf_location
+        }
+    book_id = Book.get(bid, user_id).id
+    availabilities = Availability.get_all_by_book_id(book_id)
+    return [make_availability(availability) for availability in availabilities]
+
 def get_all_book_info(user_id):
+    ## Returns if the book is available in ANY library
+    def is_book_available(book_id):
+        availabilities = Availability.get_all_by_book_id(book_id)
+        return any(_is_status_desc_available(availability.status_desc) for availability in availabilities)
     def make_book_info(book):
         return {
-            'is_available': _is_book_available(book.id),
+            'is_available': is_book_available(book.id),
             'id': book.id,
             'bid': book.bid,
             'title': book.title,
@@ -51,8 +70,5 @@ def _update_availabilities(book_id, availability_info):
         shelf_location = availability['shelf_location']
         Availability.create(book_id, branch_name, call_number, status_desc, shelf_location)
 
-
-def _is_book_available(book_id):
-    ## Returns if the book is available in ANY library
-    availabilities = Availability.get_all_by_book_id(book_id)
-    return any(availability.status_desc.strip().upper() == 'AVAILABLE' for availability in availabilities)
+def _is_status_desc_available(status_desc):
+    return status_desc.strip().upper() == CHECK_AVAILABLE_STRING
