@@ -8,6 +8,7 @@ NO_BOOKS_STRING = 'You have no books!\nUse /add to start adding new books.'
 REFRESHED_NOTIFICATION = 'Refreshed!'
 REFRESH_CALLBACK_DATA = 'refresh'
 
+## TODO: Sort by available books first, then unavailable books; then sort by alphabetical title order
 
 def lst(update, context):
     user_id = int(update.message.from_user['id'])

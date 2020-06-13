@@ -6,7 +6,7 @@ from db_helpers import get_book_title_details, get_book_availabilities
 
 BOOK_FORMAT = '<b>Title:</b> %s\n<b>Author:</b> %s'
 AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
-AVAILABILITY_FORMAT = '%s %s, %s\n       %s'
+AVAILABILITY_FORMAT = '%s %s\n       %s\n       %s'
 TRIMMED_TEXT = '<i>...additional text has been trimmed to keep within the length limit</i>'
 FOOTER_TEXT = 'Use /list to return to the main list.'
 
@@ -18,7 +18,7 @@ def view(update, context):
             group_texts.append(AVAILABILITY_LIBRARY_HEADER_FORMAT % branch_name)
             for availability in group:
                 colour = '🟢' if availability['is_available'] else '🔴'
-                group_texts.append(AVAILABILITY_FORMAT % (colour, availability['shelf_location'], availability['call_number'], availability['status_desc']))
+                group_texts.append(AVAILABILITY_FORMAT % (colour, availability['status_desc'], availability['shelf_location'], availability['call_number']))
             texts.append('\n'.join(group_texts))
         return '\n'.join(texts)
 
