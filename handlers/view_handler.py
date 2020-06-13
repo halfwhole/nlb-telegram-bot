@@ -1,14 +1,14 @@
 import itertools
-from telegram import ParseMode
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import MessageHandler, Filters
 
+from handlers.list_handler import LIST_CALLBACK_DATA
 from db_helpers import get_book_title_details, get_book_availabilities
 
 BOOK_FORMAT = '<b>Title:</b> %s\n<b>Author:</b> %s'
 AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
 AVAILABILITY_FORMAT = '%s %s\n       %s\n       %s'
 TRIMMED_TEXT = '<i>...additional text has been trimmed to keep within the length limit</i>'
-FOOTER_TEXT = 'Use /list to return to the main list.'
 
 def view(update, context):
     def make_text(availabilities):
@@ -25,7 +25,7 @@ def view(update, context):
     def trim_text_if_necessary(text):
         if len(text) <= 4096:
             return text
-        trimmed_text = text[:4090 - len(TRIMMED_TEXT) - len(FOOTER_TEXT)]
+        trimmed_text = text[:4090 - len(TRIMMED_TEXT)]
         trimmed_text = '\n'.join(trimmed_text.splitlines()[:-1]) # Remove last line: it might be incomplete, giving unclosed HTML tags
         return trimmed_text + '\n' + TRIMMED_TEXT
 
@@ -44,8 +44,14 @@ def view(update, context):
 
     text = book_text + '\n\n' + (available_group_text + '\n' if available_group_text else '') + unavailable_group_text
     text = trim_text_if_necessary(text)
-    text += '\n\n' + FOOTER_TEXT
+    reply_markup = _get_reply_markup()
 
-    update.message.reply_text(text, parse_mode=ParseMode.HTML)
+    update.message.reply_text(text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 
 view_handler = MessageHandler(Filters.regex('^/\d+$'), view)
+
+
+def _get_reply_markup():
+    keyboard = [[InlineKeyboardButton('Back', callback_data=LIST_CALLBACK_DATA)]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    return reply_markup
