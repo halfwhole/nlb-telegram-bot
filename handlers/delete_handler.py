@@ -1,27 +1,24 @@
-from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Filters
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import CallbackQueryHandler
 
 from db_helpers import delete_book_and_availabilities, get_book_title_details, is_book_present
+from handlers.list_handler import LIST_CALLBACK_DATA
+from handlers.add_handler import ADD_CALLBACK_DATA
 
-DELETE_CONTINUE = range(1)
+DELETE_CALLBACK_DATA = 'delete'
 
-INVALID_BID_STRING = 'That book ID was invalid.\nPlease try again, or use /end to finish.'
 BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists.\nPlease try again, or use /end to finish.'
-DELETE_BOOK_START_STRING = 'What book would you like to delete next? Use /end to finish.'
 DELETED_BOOK_STRING = 'Deleted "%s".'
-END_STRING = "Books deleted, you're done!"
 
-def delete_start(update, context):
-    update.message.reply_text(DELETE_BOOK_START_STRING)
-    return DELETE_CONTINUE
+REPLY_MARKUP_BACK_TEXT = '‹‹ Back to list'
+REPLY_MARKUP_UNDO_TEXT = 'Undo'
 
-def delete_continue(update, context):
-    text = update.message.text.strip()
-    if not text.isdigit():
-        update.message.reply_text(INVALID_BID_STRING)
-        return
 
-    bid = int(text)
-    user_id = int(update.message.from_user['id'])
+def delete_callback(update, context):
+    query = update.callback_query
+    user_id = int(query.message.chat['id'])
+    bid = int(query.data.split('_')[-1])
+
     if not is_book_present(bid, user_id):
         update.message.reply_text(BOOK_DOES_NOT_EXIST_STRING)
         return
@@ -30,18 +27,17 @@ def delete_continue(update, context):
     title = title_details['title']
 
     delete_book_and_availabilities(bid, user_id)
-    update.message.reply_text(DELETED_BOOK_STRING % title + '\n' + DELETE_BOOK_START_STRING)
 
-    return DELETE_CONTINUE
+    text = DELETED_BOOK_STRING % title
+    reply_markup = _get_reply_markup(bid)
+    query.edit_message_text(text, reply_markup=reply_markup)
 
-def delete_end(update, context):
-    update.message.reply_text(END_STRING)
-    return ConversationHandler.END
+def _get_reply_markup(bid):
+    back_button = InlineKeyboardButton(REPLY_MARKUP_BACK_TEXT, callback_data=LIST_CALLBACK_DATA)
+    undo_button = InlineKeyboardButton(REPLY_MARKUP_UNDO_TEXT, callback_data=ADD_CALLBACK_DATA + '_' + str(bid))
+    keyboard = [[back_button, undo_button]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    return reply_markup
+   
 
-delete_handler = ConversationHandler(
-    entry_points = [CommandHandler('delete', delete_start)],
-    states = {
-        DELETE_CONTINUE: [CommandHandler('end', delete_end), MessageHandler(Filters.text, delete_continue)]
-    },
-    fallbacks = [CommandHandler('end', delete_end)]
-)
+delete_callback_handler = CallbackQueryHandler(delete_callback, pattern='^%s_\d+$' % DELETE_CALLBACK_DATA)

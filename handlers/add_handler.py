@@ -12,7 +12,10 @@ BOOK_EXISTS_STRING = 'That book already exists.\nPlease try again, or use /end t
 PLEASE_WAIT_STRING = 'Please wait while I gather the book information...'
 END_STRING = "Books added, you're done!"
 
+ADD_CALLBACK_DATA = 'add'
+
 ## TODO: add tons of logging details!
+## TODO: create an add callback handler!! Copy and modify the delete handler
 
 def add_start(update, context):
     update.message.reply_text(ADD_BOOK_START_STRING)

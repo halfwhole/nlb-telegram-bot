@@ -3,13 +3,16 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import MessageHandler, Filters
 
 from handlers.list_handler import LIST_CALLBACK_DATA
+from handlers.delete_handler import DELETE_CALLBACK_DATA
 from db_helpers import get_book_title_details, get_book_availabilities
 
 BOOK_FORMAT = '<b>Title:</b> %s\n<b>Author:</b> %s'
 AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
 AVAILABILITY_FORMAT = '%s %s\n       %s\n       %s'
 TRIMMED_TEXT = '<i>...additional text has been trimmed to keep within the length limit</i>'
+
 REPLY_MARKUP_BACK_TEXT = '‹‹ Back to list'
+REPLY_MARKUP_DELETE_TEXT = 'Delete'
 
 def view(update, context):
     def make_text(availabilities):
@@ -45,14 +48,17 @@ def view(update, context):
 
     text = book_text + '\n\n' + (available_group_text + '\n' if available_group_text else '') + unavailable_group_text
     text = trim_text_if_necessary(text)
-    reply_markup = _get_reply_markup()
+    reply_markup = _get_reply_markup(bid)
 
     update.message.reply_text(text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 
-view_handler = MessageHandler(Filters.regex('^/\d+$'), view)
 
-
-def _get_reply_markup():
-    keyboard = [[InlineKeyboardButton(REPLY_MARKUP_BACK_TEXT, callback_data=LIST_CALLBACK_DATA)]]
+def _get_reply_markup(bid):
+    back_button = InlineKeyboardButton(REPLY_MARKUP_BACK_TEXT, callback_data=LIST_CALLBACK_DATA)
+    delete_button = InlineKeyboardButton(REPLY_MARKUP_DELETE_TEXT, callback_data=DELETE_CALLBACK_DATA + '_' + str(bid))
+    keyboard = [[back_button, delete_button]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     return reply_markup
+
+
+view_handler = MessageHandler(Filters.regex('^/\d+$'), view)

@@ -2,12 +2,16 @@ from models import Book, Availability
 from nlb import get_availability_info
 
 CHECK_AVAILABLE_STRING = 'AVAILABLE'
+BOOK_ALREADY_EXISTS_FORMAT = 'Book with bid=%d and user_id=%d already exists'
+BOOK_DOES_NOT_EXIST_FORMAT = 'Book with bid=%d and user_id=%d does not exist'
 
 def is_book_present(bid, user_id):
     return Book.get(bid, user_id) is not None
 
 def get_book_title_details(bid, user_id):
     book = Book.get(bid, user_id)
+    if not book:
+        raise LookupError(BOOK_DOES_NOT_EXIST_FORMAT % (bid, user_id))
     return { 'title': book.title, 'author': book.author }
 
 def get_book_availabilities(bid, user_id):
@@ -41,7 +45,7 @@ def get_all_book_info(user_id):
 
 def add_book_availabilities(bid, user_id, title_details, availability_info):
     if Book.get(bid, user_id):
-        raise ValueError('Book with bid=%d and user_id=%d already exists' % (bid, user_id))
+        raise ValueError(BOOK_ALREADY_EXISTS_FORMAT % (bid, user_id))
     title = title_details['title']
     author = title_details['author']
     book_id = Book.create(bid, user_id, title, author)
@@ -49,7 +53,7 @@ def add_book_availabilities(bid, user_id, title_details, availability_info):
 
 def delete_book_and_availabilities(bid, user_id):
     if Book.get(bid, user_id) is None:
-        raise LookupError('Book with bid=%d and user_id=%d does not exist' % (bid, user_id))
+        raise LookupError(BOOK_DOES_NOT_EXIST_FORMAT % (bid, user_id))
     book_id = Book.delete_cascade(bid, user_id)
     return book_id
 

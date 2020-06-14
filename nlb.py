@@ -5,6 +5,7 @@ CATALOGUE_URL = 'https://catalogue.nlb.gov.sg/cgi-bin/spydus.exe/ENQ/WPAC/BIBENQ
 CATALOGUE_TITLE_DETAILS_URL = 'https://catalogue.nlb.gov.sg/cgi-bin/spydus.exe/XFULL/WPAC/BIBENQ/{magic_number}/{bid}?FMT=REC'
 CATALOGUE_AVAILABILITIES_URL = 'https://catalogue.nlb.gov.sg/cgi-bin/spydus.exe/XHLD/WPAC/BIBENQ/{magic_number}/{bid}?RECDISP=REC'
 
+## TODO: Cache this for 5 minutes???
 def _get_magic_number():
     res = requests.get(CATALOGUE_URL)
     soup = BeautifulSoup(res.text, 'html.parser')
