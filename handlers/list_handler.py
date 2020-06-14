@@ -10,8 +10,6 @@ REFRESHED_NOTIFICATION = 'Refreshed!'
 LIST_CALLBACK_DATA = 'list'
 REFRESH_CALLBACK_DATA = 'refresh'
 
-## TODO: Sort by available books first, then unavailable books; then sort by alphabetical title order
-
 def lst(update, context):
     user_id = int(update.message.from_user['id'])
     text = _get_books_text(user_id)
@@ -40,11 +38,16 @@ def refresh_callback(update, context):
 
 
 def _get_books_text(user_id):
+    ## Sort by availability first, then title
+    def sort_all_book_info(all_book_info):
+        return sorted(all_book_info, key=lambda bi: (not bi['is_available'], bi['title']))
+
     def build_book_text(book_info):
         colour = '🟢' if book_info['is_available'] else '🔴'
         return '%s /%d: %s' % (colour, book_info['bid'], book_info['title'])
 
     all_book_info = get_all_book_info(user_id)
+    all_book_info = sort_all_book_info(all_book_info)
     if not all_book_info:
         text = NO_BOOKS_STRING
     else:
