@@ -1,5 +1,10 @@
 # nlb-telegram-bot
 
+#### Todos
+
+- TODO: Write a proper introductory section to this readme
+- TODO: Write an ansible playbook that deploys this to a remote server
+
 ## Setting Up
 
 ### Environment file
