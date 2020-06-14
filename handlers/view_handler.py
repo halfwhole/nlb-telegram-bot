@@ -2,13 +2,13 @@ import itertools
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import MessageHandler, Filters
 
-from handlers.list_handler import LIST_CALLBACK_DATA
-from handlers.delete_handler import DELETE_CALLBACK_DATA
-from db_helpers import get_book_title_details, get_book_availabilities
+from handlers import DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
+from db_helpers import is_book_present, get_book_title_details, get_book_availabilities
 
 BOOK_FORMAT = '<b>Title:</b> %s\n<b>Author:</b> %s'
 AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
 AVAILABILITY_FORMAT = '%s %s\n       %s\n       %s'
+BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists.'
 TRIMMED_TEXT = '<i>...additional text has been trimmed to keep within the length limit</i>'
 
 REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
@@ -39,6 +39,9 @@ def view(update, context):
 
     bid = int(update.message.text[1:])  # Remove leading '/'
     user_id = int(update.message.from_user['id'])
+    if not is_book_present(bid, user_id):
+        update.message.reply_text(BOOK_DOES_NOT_EXIST_STRING)
+        return
 
     title_details = get_book_title_details(bid, user_id)
     availabilities = get_book_availabilities(bid, user_id)

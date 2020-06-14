@@ -2,7 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import CommandHandler, CallbackQueryHandler
 
 from db_helpers import get_all_book_info, refresh_all_availabilities
-from handlers.add_handler import ADD_CALLBACK_DATA
+from handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA, REFRESH_CALLBACK_DATA
 
 BOOKS_PREFIX = '<b>Books:</b> across all libraries\n'
 NO_BOOKS_STRING = "You currently have no books!\nClick on 'Add Book' to get started."
@@ -10,9 +10,6 @@ REFRESHED_NOTIFICATION = 'Refreshed!'
 
 REPLY_MARKUP_REFRESH_TEXT = '↻ Refresh'
 REPLY_MARKUP_ADD_TEXT = '+ Add Book'
-
-LIST_CALLBACK_DATA = 'list'
-REFRESH_CALLBACK_DATA = 'refresh'
 
 def lst(update, context):
     user_id = int(update.message.from_user['id'])

@@ -2,10 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackQueryHandler
 
 from db_helpers import delete_book_and_availabilities, get_book_title_details, is_book_present
-from handlers.list_handler import LIST_CALLBACK_DATA
-from handlers.add_handler import ADD_CALLBACK_DATA
-
-DELETE_CALLBACK_DATA = 'delete'
+from handlers import ADD_CALLBACK_DATA, DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists.\nPlease try again, or use /end to finish.'
 DELETED_BOOK_STRING = 'Deleted "%s".'

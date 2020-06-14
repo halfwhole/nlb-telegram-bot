@@ -1,7 +1,9 @@
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler
 
 from nlb import get_title_details, get_availability_info
 from db_helpers import is_book_present, add_book_availabilities
+from handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 ADD_IN_PROGRESS = range(1)
 
@@ -11,9 +13,8 @@ INVALID_BID_STRING = 'That book ID was invalid.\nPlease try again, or use /end t
 BOOK_EXISTS_STRING = 'That book already exists.\nPlease try again, or use /end to finish.'
 PLEASE_WAIT_STRING = 'Please wait while I gather the book information...'
 END_STRING = "You're done with adding books."
-RETURN_STRING = 'Use /list to return to the main list.'
 
-ADD_CALLBACK_DATA = 'add'
+REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
 
 ## TODO: add tons of logging details!
 
@@ -58,15 +59,20 @@ def _add_in_progress_execute(bid, user_id, send_text_func):
 
     title = title_details['title']
     add_book_availabilities(bid, user_id, title_details, availability_info)
-    sent_message.edit_text(ADDED_BOOK_FORMAT % title + '\n' + RETURN_STRING)
-    ## TODO: Go to list handler
+    sent_message.edit_text(ADDED_BOOK_FORMAT % title, reply_markup=_get_reply_markup())
     return ConversationHandler.END
 
 
 def add_end(update, context):
-    update.message.reply_text(END_STRING + '\n' + RETURN_STRING)
-    ## TODO: Go to list handler
+    update.message.reply_text(END_STRING, reply_markup=_get_reply_markup())
     return ConversationHandler.END
+
+
+def _get_reply_markup():
+    back_button = InlineKeyboardButton(REPLY_MARKUP_BACK_TEXT, callback_data=LIST_CALLBACK_DATA)
+    keyboard = [[back_button]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    return reply_markup
 
 
 add_handler = ConversationHandler(
