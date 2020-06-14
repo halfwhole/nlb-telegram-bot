@@ -1,3 +1,5 @@
+from pathos.pools import ProcessPool
+
 from models import Book, Availability
 from nlb import get_availability_info
 
@@ -59,8 +61,9 @@ def delete_book_and_availabilities(bid, user_id):
 
 def refresh_all_availabilities(user_id):
     all_book_info = get_all_book_info(user_id)
-    ## TODO: make this async
-    book_ids_availability_infos = [(bi['id'], get_availability_info(bi['bid'])) for bi in all_book_info]
+    with ProcessPool(nodes=8) as pool:
+        book_ids_availability_infos = pool.map(lambda bi: (bi['id'], get_availability_info(bi['bid'])), all_book_info)
+    # book_ids_availability_infos = [(bi['id'], get_availability_info(bi['bid'])) for bi in all_book_info]
     for book_id, availability_info in book_ids_availability_infos:
         _update_availabilities(book_id, availability_info)
 
