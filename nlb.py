@@ -41,10 +41,10 @@ def get_availability_info(bid):
     soup = BeautifulSoup(res.text, 'html.parser')
 
     dispatch_td_caption = {
-        'Library':                lambda td: { 'branch_name': td.find('a').find('span').text },
-        'Section/Shelf Location': lambda td: { 'shelf_location': td.find('book-location').text },
-        'Call Number':            lambda td: { 'call_number': ' '.join(span.text for span in td.find_all('span')) },
-        'Item Status':            lambda td: { 'status_desc': td.find('span').text }
+        'Library':                lambda td: { 'branch_name': td.find('a').find('span').text.strip() },
+        'Section/Shelf Location': lambda td: { 'shelf_location': td.find('book-location').text.strip() },
+        'Call Number':            lambda td: { 'call_number': ' '.join(span.text for span in td.find_all('span')).strip() },
+        'Item Status':            lambda td: { 'status_desc': td.find('span').text.strip() }
     }
 
     def parse_tr(tr):

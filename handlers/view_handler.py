@@ -16,14 +16,18 @@ REPLY_MARKUP_DELETE_TEXT = 'Delete Book'
 
 def view(update, context):
     def make_text(availabilities):
+        def make_group_text(availability):
+            return AVAILABILITY_FORMAT % (
+                '🟢' if availability['is_available'] else '🔴',
+                availability['status_desc']    if availability['status_desc']    else '<i>&lt;No status description&gt;</i>',
+                availability['shelf_location'] if availability['shelf_location'] else '<i>&lt;No shelf location&gt;</i>',
+                availability['call_number']    if availability['call_number']    else '<i>&lt;No call number&gt;</i>'
+            )
         texts = []
         for branch_name, group in itertools.groupby(availabilities, lambda a: a['branch_name']):
-            group_texts = []
-            group_texts.append(AVAILABILITY_LIBRARY_HEADER_FORMAT % branch_name)
-            for availability in group:
-                colour = '🟢' if availability['is_available'] else '🔴'
-                group_texts.append(AVAILABILITY_FORMAT % (colour, availability['status_desc'], availability['shelf_location'], availability['call_number']))
-            texts.append('\n'.join(group_texts))
+            group_text_header = AVAILABILITY_LIBRARY_HEADER_FORMAT % branch_name
+            group_text_availabilities = '\n'.join([make_group_text(availability) for availability in group])
+            texts.append(group_text_header + '\n' + group_text_availabilities)
         return '\n'.join(texts)
 
     def trim_text_if_necessary(text):
