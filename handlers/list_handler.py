@@ -11,6 +11,8 @@ REFRESHED_NOTIFICATION = 'Refreshed!'
 REPLY_MARKUP_REFRESH_TEXT = '↻ Refresh'
 REPLY_MARKUP_ADD_TEXT = '+ Add Book'
 
+## TODO: implement filtering by library
+
 def lst(update, context):
     user_id = int(update.message.from_user['id'])
     text = _get_books_text(user_id)

@@ -4,7 +4,7 @@ from telegram.ext import CallbackQueryHandler
 from db_helpers import delete_book_and_availabilities, get_book_title_details, is_book_present
 from handlers import ADD_CALLBACK_DATA, DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
 
-BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists.\nPlease try again, or use /end to finish.'
+BOOK_DOES_NOT_EXIST_STRING = 'The book does not exist.'
 DELETED_BOOK_STRING = 'Deleted "%s".'
 
 REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
