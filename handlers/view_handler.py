@@ -11,8 +11,8 @@ AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
 AVAILABILITY_FORMAT = '%s %s\n       %s\n       %s'
 TRIMMED_TEXT = '<i>...additional text has been trimmed to keep within the length limit</i>'
 
-REPLY_MARKUP_BACK_TEXT = '‹‹ Back to list'
-REPLY_MARKUP_DELETE_TEXT = 'Delete'
+REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
+REPLY_MARKUP_DELETE_TEXT = 'Delete Book'
 
 def view(update, context):
     def make_text(availabilities):

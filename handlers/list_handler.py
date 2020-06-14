@@ -2,11 +2,14 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import CommandHandler, CallbackQueryHandler
 
 from db_helpers import get_all_book_info, refresh_all_availabilities
+from handlers.add_handler import ADD_CALLBACK_DATA
 
 BOOKS_PREFIX = '<b>Books:</b> across all libraries\n'
-NO_BOOKS_STRING = 'You have no books!\nUse /add to start adding new books.'
-REPLY_MARKUP_REFRESH_TEXT = '↻ Refresh'
+NO_BOOKS_STRING = "You currently have no books!\nClick on 'Add Book' to get started."
 REFRESHED_NOTIFICATION = 'Refreshed!'
+
+REPLY_MARKUP_REFRESH_TEXT = '↻ Refresh'
+REPLY_MARKUP_ADD_TEXT = '+ Add Book'
 
 LIST_CALLBACK_DATA = 'list'
 REFRESH_CALLBACK_DATA = 'refresh'
@@ -56,7 +59,9 @@ def _get_books_text(user_id):
     return text
 
 def _get_reply_markup():
-    keyboard = [[InlineKeyboardButton(REPLY_MARKUP_REFRESH_TEXT, callback_data=REFRESH_CALLBACK_DATA)]]
+    refresh_button = InlineKeyboardButton(REPLY_MARKUP_REFRESH_TEXT, callback_data=REFRESH_CALLBACK_DATA)
+    add_button = InlineKeyboardButton(REPLY_MARKUP_ADD_TEXT, callback_data=ADD_CALLBACK_DATA)
+    keyboard = [[refresh_button, add_button]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     return reply_markup
 

@@ -24,8 +24,9 @@ def main():
     updater = Updater(token, use_context=True)
     dp = updater.dispatcher
 
-    dp.add_handler(start_handler)
-    dp.add_handler(help_handler)
+    ## Putting this above so that typing /list or /start etc. in the midst of the conversation won't sabotage it
+    dp.add_handler(add_handler)
+    dp.add_handler(delete_callback_handler)
 
     dp.add_handler(list_handler)
     dp.add_handler(list_callback_handler)
@@ -33,8 +34,8 @@ def main():
 
     dp.add_handler(view_handler)
 
-    dp.add_handler(add_handler)
-    dp.add_handler(delete_callback_handler)
+    dp.add_handler(start_handler)
+    dp.add_handler(help_handler)
 
     dp.add_handler(fallback_handler)
     dp.add_error_handler(error)

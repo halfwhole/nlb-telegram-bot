@@ -10,14 +10,14 @@ DELETE_CALLBACK_DATA = 'delete'
 BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists.\nPlease try again, or use /end to finish.'
 DELETED_BOOK_STRING = 'Deleted "%s".'
 
-REPLY_MARKUP_BACK_TEXT = '‹‹ Back to list'
+REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
 REPLY_MARKUP_UNDO_TEXT = 'Undo'
 
 
 def delete_callback(update, context):
     query = update.callback_query
-    user_id = int(query.message.chat['id'])
     bid = int(query.data.split('_')[-1])
+    user_id = int(query.message.chat['id'])
 
     if not is_book_present(bid, user_id):
         update.message.reply_text(BOOK_DOES_NOT_EXIST_STRING)
