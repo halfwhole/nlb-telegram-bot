@@ -51,8 +51,7 @@ def _add_in_progress_execute(bid, user_id, bot, chat_id, send_text_func):
     sent_message = send_text_func(PLEASE_WAIT_STRING)
     try:
         bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
-        ## TODO: make this non-blocking and async. What if other users want to do other things in the meantime?
-        ## TODO: implement timeout?
+        ## TODO: make this non-blocking, timeout?
         title_details = get_title_details(bid)
         availability_info = get_availability_info(bid)
     except Exception as e:

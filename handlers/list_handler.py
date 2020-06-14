@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, ChatAction
 from telegram.ext import CommandHandler, CallbackQueryHandler
 
 from db_helpers import get_all_book_info, refresh_all_availabilities
@@ -29,7 +29,13 @@ def lst_callback(update, context):
 def refresh_callback(update, context):
     query = update.callback_query
     user_id = int(query.message.chat['id'])
+    bot = context.bot
+    chat_id = update.effective_message.chat_id
+
+    context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
+    ## TODO: make this non-blocking, timeout?
     refresh_all_availabilities(user_id)
+
     text = _get_books_text(user_id)
     reply_markup = _get_reply_markup()
     try:
