@@ -5,6 +5,7 @@ from db_helpers import get_all_book_info, refresh_all_availabilities
 
 BOOKS_PREFIX = '<b>Books:</b> across all libraries\n'
 NO_BOOKS_STRING = 'You have no books!\nUse /add to start adding new books.'
+REPLY_MARKUP_REFRESH_TEXT = '↻ Refresh'
 REFRESHED_NOTIFICATION = 'Refreshed!'
 
 LIST_CALLBACK_DATA = 'list'
@@ -55,7 +56,7 @@ def _get_books_text(user_id):
     return text
 
 def _get_reply_markup():
-    keyboard = [[InlineKeyboardButton('Refresh', callback_data=REFRESH_CALLBACK_DATA)]]
+    keyboard = [[InlineKeyboardButton(REPLY_MARKUP_REFRESH_TEXT, callback_data=REFRESH_CALLBACK_DATA)]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     return reply_markup
 

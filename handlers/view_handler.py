@@ -9,6 +9,7 @@ BOOK_FORMAT = '<b>Title:</b> %s\n<b>Author:</b> %s'
 AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
 AVAILABILITY_FORMAT = '%s %s\n       %s\n       %s'
 TRIMMED_TEXT = '<i>...additional text has been trimmed to keep within the length limit</i>'
+REPLY_MARKUP_BACK_TEXT = '‹‹ Back to list'
 
 def view(update, context):
     def make_text(availabilities):
@@ -52,6 +53,6 @@ view_handler = MessageHandler(Filters.regex('^/\d+$'), view)
 
 
 def _get_reply_markup():
-    keyboard = [[InlineKeyboardButton('Back', callback_data=LIST_CALLBACK_DATA)]]
+    keyboard = [[InlineKeyboardButton(REPLY_MARKUP_BACK_TEXT, callback_data=LIST_CALLBACK_DATA)]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     return reply_markup
