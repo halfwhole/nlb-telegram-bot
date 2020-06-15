@@ -6,6 +6,8 @@ from config import conn_string
 
 Base = declarative_base()
 
+## TODO: look into the possibility of using a decorator for session/session.close()
+
 ## NOTE: A potential source of confusion is the difference between Book's id and bid.
 ## - Book's id is the primary key assigned by this database.
 ## - Book's bid is that which is used to identify NLB books, as per the catalogue URL.
@@ -108,6 +110,59 @@ class Availability(Base):
     def __repr__(self):
         return "<Availability(id=%s, book_id=%d, branch_name='%s', status_desc='%s')" % (
             self.id, self.book_id, self.branch_name, self.status_desc)
+
+
+class Filter(Base):
+    __tablename__ = 'filter'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+    branch_name = Column(String(200))
+
+    @staticmethod
+    def get(user_id, branch_name):
+        session = _create_session()
+        filter = session.query(Filter).filter(Filter.user_id == user_id).filter(Filter.branch_name == branch_name).first()
+        session.close()
+        return filter
+
+    @staticmethod
+    def get_all(user_id):
+        session = _create_session()
+        filters = session.query(Filter).filter(Filter.user_id == user_id).all()
+        session.close()
+        return filters
+
+    @staticmethod
+    def create(user_id, branch_name):
+        session = _create_session()
+        filter = Filter(user_id=user_id, branch_name=branch_name)
+        session.add(filter)
+        session.commit()
+        filter_id = filter.id
+        session.close()
+        return filter_id
+
+    @staticmethod
+    def delete(user_id, branch_name):
+        session = _create_session()
+        filter = Filter.get(user_id, branch_name)
+        session.delete(filter)
+        session.commit()
+        session.close()
+
+    @staticmethod
+    def delete_all(user_id):
+        session = _create_session()
+        filters = Filter.get_all(user_id)
+        for filter in filters:
+            session.delete(filter)
+        session.commit()
+        session.close()
+
+    def __repr__(self):
+        return "<Filter(id=%s, user_id=%d, branch_name='%s')" % (
+            self.id, self.user_id, self.branch_name)
 
 
 ## Remember to call session.close() after you finish!

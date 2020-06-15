@@ -1,11 +1,15 @@
 from pathos.pools import ProcessPool
 
-from models import Book, Availability
+from models import Book, Availability, Filter
 from nlb import get_availability_info
 
 CHECK_AVAILABLE_STRING = 'AVAILABLE'
 BOOK_ALREADY_EXISTS_FORMAT = 'Book with bid=%d and user_id=%d already exists'
 BOOK_DOES_NOT_EXIST_FORMAT = 'Book with bid=%d and user_id=%d does not exist'
+
+###############################
+## BOOK/AVAILABILITY HELPERS ##
+###############################
 
 def is_book_present(bid, user_id):
     return Book.get(bid, user_id) is not None
@@ -31,19 +35,27 @@ def get_book_availabilities(bid, user_id):
 
 def get_all_book_info(user_id):
     ## Returns if the book is available in ANY library
-    def is_book_available(book_id):
-        availabilities = Availability.get_all_by_book_id(book_id)
+    def is_book_available(availabilities):
         return any(_is_status_desc_available(availability.status_desc) for availability in availabilities)
     def make_book_info(book):
+        availabilities = Availability.get_all_by_book_id(book.id)
         return {
-            'is_available': is_book_available(book.id),
+            'is_available': is_book_available(availabilities),
             'id': book.id,
             'bid': book.bid,
             'title': book.title,
-            'author': book.author
+            'author': book.author,
+            'availabilities': availabilities
         }
     books = Book.get_all(user_id)
     return [make_book_info(book) for book in books]
+
+def get_all_branch_names(user_id):
+    all_book_info = get_all_book_info(user_id)
+    all_availabilities = [bi['availabilities'] for bi in all_book_info]
+    all_availabilities = [x for availability in all_availabilities for x in availability]
+    branch_names = sorted(list(set(availability.branch_name for availability in all_availabilities)))
+    return branch_names
 
 def add_book_availabilities(bid, user_id, title_details, availability_info):
     if Book.get(bid, user_id):
@@ -63,7 +75,6 @@ def refresh_all_availabilities(user_id):
     all_book_info = get_all_book_info(user_id)
     with ProcessPool(nodes=8) as pool:
         book_ids_availability_infos = pool.map(lambda bi: (bi['id'], get_availability_info(bi['bid'])), all_book_info)
-    # book_ids_availability_infos = [(bi['id'], get_availability_info(bi['bid'])) for bi in all_book_info]
     for book_id, availability_info in book_ids_availability_infos:
         _update_availabilities(book_id, availability_info)
 
@@ -79,3 +90,23 @@ def _update_availabilities(book_id, availability_info):
 
 def _is_status_desc_available(status_desc):
     return status_desc.strip().upper() == CHECK_AVAILABLE_STRING
+
+
+####################
+## FILTER HELPERS ##
+####################
+
+def get_filter_branch_names(user_id):
+    filters = Filter.get_all(user_id)
+    branch_names = sorted(filter.branch_name for filter in filters)
+    return branch_names
+
+def clear_all_filters(user_id):
+    Filter.delete_all(user_id)
+
+def toggle_filter(user_id, branch_name):
+    filter = Filter.get(user_id, branch_name)
+    if filter:
+        Filter.delete(user_id, branch_name)
+    else:
+        Filter.create(user_id, branch_name)

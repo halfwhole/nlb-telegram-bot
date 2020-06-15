@@ -7,6 +7,7 @@ from handlers.start_handler import start_handler
 from handlers.help_handler import help_handler
 from handlers.source_handler import source_handler
 from handlers.list_handler import list_handler, list_callback_handler, refresh_callback_handler
+from handlers.filter_handler import filter_callback_handler, filter_clear_callback_handler, filter_toggle_callback_handler
 from handlers.view_handler import view_handler
 from handlers.add_handler import add_handler
 from handlers.delete_handler import delete_callback_handler
@@ -32,6 +33,10 @@ def main():
     dp.add_handler(list_handler)
     dp.add_handler(list_callback_handler)
     dp.add_handler(refresh_callback_handler)
+
+    dp.add_handler(filter_callback_handler)
+    dp.add_handler(filter_clear_callback_handler)
+    dp.add_handler(filter_toggle_callback_handler)
 
     dp.add_handler(view_handler)
 
