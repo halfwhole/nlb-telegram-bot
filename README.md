@@ -3,7 +3,6 @@
 #### Todos
 
 - TODO: Write a proper introductory section to this readme
-- TODO: Write an ansible playbook that deploys this to a remote server
 
 ## Setting Up
 
@@ -32,6 +31,24 @@ Both `docker` and `docker-compose` will need to be installed. Run
 
 ``` sh
 $ docker-compose up
+```
+
+## Deploying to Production
+
+Create a file `production.ini`:
+
+``` ini
+[[nlb-servers]]
+<your.ip.address.here> ansible_user=<user>
+```
+
+Copy `.env` to `.env.prod`, with the appropriate production credentials.
+
+Make sure you have `python`, `pip`, `docker`, `docker-compose`, and `pipenv`
+available on your production server, then deploy using this command:
+
+``` sh
+ansible-playbook playbook.yml -i production.ini
 ```
 
 ## Developer Notes

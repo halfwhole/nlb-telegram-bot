@@ -1,0 +1,31 @@
+---
+- hosts: nlb_servers
+  tasks:
+  - name: Copy .env.prod file to .env
+    copy:
+      src: .env.prod
+      dest: "{{ dirname }}/.env"
+
+  - name: Checkout latest verision of the repository
+    git:
+      repo: "https://github.com/halfwhole/nlb-telegram-bot"
+      dest: "{{ dirname }}"
+      force: yes
+
+  - name: Build docker image
+    command: "docker-compose build"
+    args:
+      chdir: "{{ dirname }}"
+
+  - name: Remove docker containers
+    command: "docker-compose down"
+    args:
+      chdir: "{{ dirname }}"
+
+  - name: Start docker containers
+    command: "docker-compose up -d"
+    args:
+      chdir: "{{ dirname }}"
+
+  vars:
+    dirname: ~/nlb-telegram-bot/
