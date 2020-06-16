@@ -17,8 +17,9 @@ REPLY_MARKUP_DELETE_TEXT = 'Delete Book'
 def view(update, context):
     def make_text(availabilities):
         def make_group_text(availability):
+            colour = '🟢' if availability['is_available'] else '🔴'
             return AVAILABILITY_FORMAT % (
-                '🟢' if availability['is_available'] else '🔴',
+                colour,
                 availability['status_desc']    if availability['status_desc']    else '<i>&lt;No status description&gt;</i>',
                 availability['shelf_location'] if availability['shelf_location'] else '<i>&lt;No shelf location&gt;</i>',
                 availability['call_number']    if availability['call_number']    else '<i>&lt;No call number&gt;</i>'

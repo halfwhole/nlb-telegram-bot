@@ -34,13 +34,16 @@ def get_book_availabilities(bid, user_id):
     return [make_availability(availability) for availability in availabilities]
 
 def get_all_book_info(user_id):
-    ## Returns if the book is available in ANY library
-    def is_book_available(availabilities):
-        return any(_is_status_desc_available(availability.status_desc) for availability in availabilities)
-    def make_book_info(book):
+    ## Returns if the book is available in FILTERED libraries
+    def is_book_available(availabilities, filter_branch_names):
+        if filter_branch_names:
+            return any(_is_status_desc_available(a.status_desc) for a in availabilities if a.branch_name in filter_branch_names)
+        else:
+            return any(_is_status_desc_available(a.status_desc) for a in availabilities)
+    def make_book_info(book, filter_branch_names):
         availabilities = Availability.get_all_by_book_id(book.id)
         return {
-            'is_available': is_book_available(availabilities),
+            'is_available': is_book_available(availabilities, filter_branch_names),
             'id': book.id,
             'bid': book.bid,
             'title': book.title,
@@ -48,7 +51,8 @@ def get_all_book_info(user_id):
             'availabilities': availabilities
         }
     books = Book.get_all(user_id)
-    return [make_book_info(book) for book in books]
+    filter_branch_names = get_filter_branch_names(user_id)
+    return [make_book_info(book, filter_branch_names) for book in books]
 
 def get_all_branch_names(user_id):
     all_book_info = get_all_book_info(user_id)
