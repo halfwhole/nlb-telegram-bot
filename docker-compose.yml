@@ -2,16 +2,17 @@ version: "3.3"
 services:
   app:
     build: .
+    container_name: nlb_app
     volumes:
       - .:/nlb-telegram-bot
-    # TODO: pipenv run alembic upgrade head && pipenv run python -u __init__.py
-    command: pipenv run python -u __init__.py
-    # TODO: commented for speed, uncomment for stability
-    # depends_on:
-    #   - db
+    command: bash -c "pipenv run alembic upgrade head && pipenv run python -u __init__.py"
+    depends_on:
+      - db
     restart: on-failure
+
   db:
     image: postgres:13-alpine
+    container_name: nlb_db
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
