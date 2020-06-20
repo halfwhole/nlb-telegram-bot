@@ -26,6 +26,7 @@ def lst_callback(update, context):
     text = _get_books_text(user_id)
     reply_markup = _get_reply_markup(user_id)
     query.edit_message_text(text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+    query.answer()
 
 def refresh_callback(update, context):
     query = update.callback_query

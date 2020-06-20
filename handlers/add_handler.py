@@ -67,6 +67,7 @@ def _add_in_progress_execute(bid, user_id, bot, chat_id, send_text_func):
 def add_end_callback(update, context):
     query = update.callback_query
     query.edit_message_text(END_STRING, reply_markup=_get_back_reply_markup())
+    query.answer()
     return ConversationHandler.END
 
 

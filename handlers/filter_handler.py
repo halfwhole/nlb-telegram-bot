@@ -40,9 +40,12 @@ def _filter_callback_execute(query, user_id):
         text = NO_FILTERS_HEADER
     else:
         text = FILTER_HEADER + '\n' + '\n'.join([FILTER_BRANCH_NAME_FORMAT % x for x in filter_branch_names])
+
     try:
         query.edit_message_text(text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
     except Exception:
+        pass
+    finally:
         query.answer()
 
 

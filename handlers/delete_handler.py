@@ -24,10 +24,12 @@ def delete_callback(update, context):
     title = title_details['title']
 
     delete_book_and_availabilities(bid, user_id)
+    ## TODO: also delete filters that are no longer universally present
 
     text = DELETED_BOOK_STRING % title
     reply_markup = _get_reply_markup(bid)
     query.edit_message_text(text, reply_markup=reply_markup)
+    query.answer()
 
 def _get_reply_markup(bid):
     back_button = InlineKeyboardButton(REPLY_MARKUP_BACK_TEXT, callback_data=LIST_CALLBACK_DATA)
