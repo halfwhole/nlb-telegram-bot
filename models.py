@@ -6,8 +6,6 @@ from config import conn_string
 
 Base = declarative_base()
 
-## TODO: look into the possibility of using a decorator for session/session.close()
-
 ## NOTE: A potential source of confusion is the difference between Book's id and bid.
 ## - Book's id is the primary key assigned by this database.
 ## - Book's bid is that which is used to identify NLB books, as per the catalogue URL.

@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackQueryHandler
 
-from db_helpers import delete_book_and_availabilities, get_book_title_details, is_book_present
+from db_helpers import delete_book_and_availabilities, delete_hanging_filters, get_book_title_details, is_book_present
 from handlers import ADD_CALLBACK_DATA, DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 BOOK_DOES_NOT_EXIST_STRING = 'The book does not exist.'
@@ -24,7 +24,7 @@ def delete_callback(update, context):
     title = title_details['title']
 
     delete_book_and_availabilities(bid, user_id)
-    ## TODO: also delete filters that are no longer universally present
+    delete_hanging_filters(user_id)
 
     text = DELETED_BOOK_STRING % title
     reply_markup = _get_reply_markup(bid)

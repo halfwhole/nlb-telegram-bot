@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import CallbackQueryHandler
 
-from db_helpers import get_all_branch_names, get_filter_branch_names, clear_all_filters, toggle_filter
+from db_helpers import get_all_branch_names, get_filter_branch_names, delete_all_filters, toggle_filter
 from handlers import FILTER_CALLBACK_DATA, FILTER_CLEAR_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 FILTER_HEADER = '<b>Filters:</b>'
@@ -22,7 +22,7 @@ def filter_callback(update, context):
 def filter_clear_callback(update, context):
     query = update.callback_query
     user_id = int(query.message.chat['id'])
-    clear_all_filters(user_id)
+    delete_all_filters(user_id)
     _filter_callback_execute(query, user_id)
 
 def filter_toggle_callback(update, context):

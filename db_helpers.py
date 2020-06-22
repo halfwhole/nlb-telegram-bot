@@ -105,8 +105,15 @@ def get_filter_branch_names(user_id):
     branch_names = sorted(filter.branch_name for filter in filters)
     return branch_names
 
-def clear_all_filters(user_id):
+def delete_all_filters(user_id):
     Filter.delete_all(user_id)
+
+def delete_hanging_filters(user_id):
+    branch_names = get_all_branch_names(user_id)
+    filters = Filter.get_all(user_id)
+    for filter in filters:
+        if filter.branch_name not in branch_names:
+            Filter.delete(user_id, filter.branch_name)
 
 def toggle_filter(user_id, branch_name):
     filter = Filter.get(user_id, branch_name)
