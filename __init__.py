@@ -1,8 +1,7 @@
-import logging
 import psycopg2
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
-from config import token
+from config import token, logger
 from handlers.start_handler import start_handler
 from handlers.help_handler import help_handler
 from handlers.source_handler import source_handler
@@ -13,14 +12,9 @@ from handlers.add_handler import add_handler
 from handlers.delete_handler import delete_callback_handler
 from handlers.fallback_handler import fallback_handler
 
-## Enable logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 ## Error handling
 def error(update, context):
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
+    logger.warning('ERROR: Update "%s" caused error "%s"', update, context.error)
 
 def main():
     updater = Updater(token, use_context=True)
@@ -48,7 +42,7 @@ def main():
     dp.add_error_handler(error)
 
     updater.start_polling()
-    print("Bot is up and running")
+    logger.info('START: Bot is up and running')
     updater.idle()
 
 

@@ -1,5 +1,6 @@
 from pathos.pools import ProcessPool
 
+from config import logger
 from models import Book, Availability, Filter
 from nlb import get_availability_info
 
@@ -64,18 +65,21 @@ def get_all_branch_names(user_id):
 def add_book_availabilities(bid, user_id, title_details, availability_info):
     if Book.get(bid, user_id):
         raise ValueError(BOOK_ALREADY_EXISTS_FORMAT % (bid, user_id))
+    logger.info('ADD bid=%d by user_id=%s' % (bid, user_id))
     title = title_details['title']
     author = title_details['author']
     book_id = Book.create(bid, user_id, title, author)
     _update_availabilities(book_id, availability_info)
 
 def delete_book_and_availabilities(bid, user_id):
+    logger.info('DELETE bid=%d by user_id=%s' % (bid, user_id))
     if Book.get(bid, user_id) is None:
         raise LookupError(BOOK_DOES_NOT_EXIST_FORMAT % (bid, user_id))
     book_id = Book.delete_cascade(bid, user_id)
     return book_id
 
 def refresh_all_availabilities(user_id):
+    logger.info('REFRESH by user_id=%d' % user_id)
     all_book_info = get_all_book_info(user_id)
     with ProcessPool(nodes=8) as pool:
         book_ids_availability_infos = pool.map(lambda bi: (bi['id'], get_availability_info(bi['bid'])), all_book_info)

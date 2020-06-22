@@ -5,6 +5,7 @@ from nlb import get_title_details, get_availability_info
 from db_helpers import is_book_present, add_book_availabilities
 from handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
 
+
 ADD_IN_PROGRESS = range(1)
 
 ADD_BOOK_START_STRING = 'What book ID would you like to add?'
@@ -16,7 +17,6 @@ END_STRING = "You're done with adding books."
 
 REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
 
-## TODO: add tons of logging details!
 
 def add_start_callback(update, context):
     query = update.callback_query
