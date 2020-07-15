@@ -1,6 +1,17 @@
+LOG_START_MESSAGE = 'START: Bot is up and running'
+LOG_ERROR_MESSAGE_FORMAT = 'ERROR: Update "%s" caused error "%s"'
+
 ADD_CALLBACK_DATA = 'add'
 FILTER_CALLBACK_DATA = 'filter'
 FILTER_CLEAR_CALLBACK_DATA = 'filterclear'
 DELETE_CALLBACK_DATA = 'delete'
 LIST_CALLBACK_DATA = 'list'
 REFRESH_CALLBACK_DATA = 'refresh'
+
+REPLY_MARKUP_ADD_BOOK_TEXT = '+ Add Book'
+REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
+REPLY_MARKUP_DELETE_TEXT = 'Delete Book'
+REPLY_MARKUP_FILTER_TEXT = 'Filter by Library'
+REPLY_MARKUP_CLEAR_TEXT = 'Clear All Filters'
+REPLY_MARKUP_REFRESH_TEXT = '↻ Refresh'
+REPLY_MARKUP_UNDO_TEXT = 'Undo'

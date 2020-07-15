@@ -2,7 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import CallbackQueryHandler
 
 from app.db_helpers import get_all_branch_names, get_filter_branch_names, delete_all_filters, toggle_filter
-from app.constants import FILTER_CALLBACK_DATA, FILTER_CLEAR_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.constants import FILTER_CALLBACK_DATA, FILTER_CLEAR_CALLBACK_DATA, LIST_CALLBACK_DATA, REPLY_MARKUP_BACK_TEXT, REPLY_MARKUP_CLEAR_TEXT
 
 FILTER_HEADER = '<b>Filters:</b>'
 NO_FILTERS_HEADER = """
@@ -11,8 +11,6 @@ Click on any of the branch names below to toggle its filter.
 """
 FILTER_BRANCH_NAME_FORMAT = '• %s'
 
-REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
-REPLY_MARKUP_CLEAR_TEXT = 'Clear All Filters'
 
 def filter_callback(update, context):
     query = update.callback_query

@@ -1,4 +1,6 @@
 from app.config import token, logger
+from app.constants import LOG_ERROR_MESSAGE_FORMAT
+
 from app.handlers.start_handler import start_handler
 from app.handlers.help_handler import help_handler
 from app.handlers.howtoadd_handler import howtoadd_handler
@@ -11,8 +13,7 @@ from app.handlers.delete_handler import delete_callback_handler
 from app.handlers.fallback_handler import fallback_handler
 
 def error(update, context):
-    ## TODO: Put this into a constant
-    logger.warning('ERROR: Update "%s" caused error "%s"', update, context.error)
+    logger.warning(LOG_ERROR_MESSAGE_FORMAT % (update, context.error))
 
 def setup_handlers(dp):
     ## Putting these above so that typing /list or /start etc. in the midst of the conversation won't sabotage it

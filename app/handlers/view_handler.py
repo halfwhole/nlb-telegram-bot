@@ -3,7 +3,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import MessageHandler, Filters
 
 from app.db_helpers import is_book_present, get_book_title_details, get_book_availabilities
-from app.constants import DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.constants import DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA, REPLY_MARKUP_BACK_TEXT, REPLY_MARKUP_DELETE_TEXT
 
 BOOK_FORMAT = '<b>Title:</b> %s\n<b>Author:</b> %s'
 AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
@@ -11,8 +11,6 @@ AVAILABILITY_FORMAT = '%s %s\n       %s\n       %s'
 BOOK_DOES_NOT_EXIST_STRING = 'No book with the ID exists.'
 TRIMMED_TEXT = '<i>...additional text has been trimmed to keep within the length limit</i>'
 
-REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
-REPLY_MARKUP_DELETE_TEXT = 'Delete Book'
 
 def view(update, context):
     def make_text(availabilities):

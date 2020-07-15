@@ -2,13 +2,10 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackQueryHandler
 
 from app.db_helpers import delete_book_and_availabilities, delete_hanging_filters, get_book_title_details, is_book_present
-from app.constants import ADD_CALLBACK_DATA, DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.constants import ADD_CALLBACK_DATA, DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA, REPLY_MARKUP_BACK_TEXT, REPLY_MARKUP_UNDO_TEXT
 
 BOOK_DOES_NOT_EXIST_STRING = 'The book does not exist.'
 DELETED_BOOK_STRING = 'Deleted "%s".'
-
-REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
-REPLY_MARKUP_UNDO_TEXT = 'Undo'
 
 
 def delete_callback(update, context):

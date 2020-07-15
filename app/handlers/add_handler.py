@@ -3,7 +3,7 @@ from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Fi
 
 from app.nlb import get_title_details, get_availability_info
 from app.db_helpers import is_book_present, add_book_availabilities
-from app.constants import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.constants import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA, REPLY_MARKUP_BACK_TEXT
 
 
 ADD_IN_PROGRESS = range(1)
@@ -14,8 +14,6 @@ INVALID_BID_STRING = 'That book URL is invalid.'
 BOOK_ALREADY_EXISTS_STRING = 'That book already exists.'
 PLEASE_WAIT_STRING = 'Please wait while I gather the book information...'
 END_STRING = "You're done with adding books."
-
-REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
 
 
 def add_start_callback(update, context):

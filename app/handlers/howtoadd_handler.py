@@ -1,7 +1,7 @@
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ChatAction
 
-from app.constants import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.constants import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA, REPLY_MARKUP_ADD_BOOK_TEXT, REPLY_MARKUP_BACK_TEXT
 
 HOWTOADD_MESSAGE = """
 1. Search for your book using the NLB catalogue at catalogue.nlb.gov.sg.
@@ -11,9 +11,6 @@ HOWTOADD_MESSAGE = """
 """
 HOWTOADD_PHOTO_FILE = 'assets/howtoadd.png'
 
-## TODO: place all these into constants
-REPLY_MARKUP_BACK_TEXT = '‹‹ Back to List'
-REPLY_MARKUP_ADD_BOOK_TEXT = '+ Add Book'
 
 def howtoadd(update, context):
     chat_id = update.effective_message.chat_id
