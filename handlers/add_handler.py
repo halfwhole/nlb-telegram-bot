@@ -8,9 +8,9 @@ from handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 ADD_IN_PROGRESS = range(1)
 
-ADD_BOOK_START_STRING = 'What book ID would you like to add?'
+ADD_BOOK_START_STRING = 'What book URL would you like to add?'
 ADDED_BOOK_FORMAT = 'Added "%s".'
-INVALID_BID_STRING = 'That book ID is invalid.'
+INVALID_BID_STRING = 'That book URL is invalid.'
 BOOK_ALREADY_EXISTS_STRING = 'That book already exists.'
 PLEASE_WAIT_STRING = 'Please wait while I gather the book information...'
 END_STRING = "You're done with adding books."
@@ -25,10 +25,15 @@ def add_start_callback(update, context):
 
 def add_in_progress(update, context):
     text = update.message.text.strip()
-    if not text.isdigit():
+    ## Parse input text: either a book bid or catalogue URL
+    try:
+        if text.isdigit():
+            bid = int(text)
+        else:
+            bid = int(text.split('/')[-1].split(',')[0])
+    except:
         update.message.reply_text(INVALID_BID_STRING, reply_markup=_get_back_reply_markup())
         return ConversationHandler.END
-    bid = int(text)
     user_id = int(update.message.from_user['id'])
     chat_id = update.effective_message.chat_id
     return_code = _add_in_progress_execute(bid, user_id, context.bot, chat_id, update.message.reply_text)

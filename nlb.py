@@ -34,6 +34,7 @@ def get_title_details(bid):
 
 ## [ { branch_name: ..., shelf_location: ..., call_number: ..., status_desc: ... } ]
 def get_availability_info(bid):
+    ## TODO: Raise possible exception
     magic_number = _get_magic_number()
     availabilities_url = CATALOGUE_AVAILABILITIES_URL.format(magic_number=magic_number, bid=bid)
 

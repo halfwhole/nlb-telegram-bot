@@ -8,29 +8,36 @@
 
 ### Environment file
 
-Create a new file `.env` in the top-level project directory, with the
+Copy `.env.example` to a new file `.env` in the top-level project directory, with the
 following configurations:
 
-- `TOKEN`: Telegram API token from the `@BotFather`
-- `POSTGRES_USER`
-- `POSTGRES_PASSWORD`
-- `POSTGRES_DB`
-
-```
-## .env
-TOKEN=<your-token-here>
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=nlb
-```
+- `TOKEN`: Telegram API token from the BotFather
+- `POSTGRES_USER`: Default `postgres`
+- `POSTGRES_PASSWORD`: Default `postgres`
+- `POSTGRES_DB`: Default `nlb`
 
 ### Docker
 
 Both `docker` and `docker-compose` will need to be installed. Run
-`docker-compose up` to serve the telegram bot and database.
+`docker-compose up` to serve the telegram bot and database:
 
 ``` sh
 $ docker-compose up
+```
+
+### Telegram configurations
+
+Set the following in Telegram with the BotFather:
+
+- Set the icon using `assets/icon.png`.
+- Set the command list using `/setcommands` with the following text:
+
+```
+start - Start the bot
+help - Show help message
+list - The main page. Add, delete, view, and refresh books here
+howtoadd - Show instructions on how to add a book
+source - Show further details about this project
 ```
 
 ## Deploying to Production
@@ -42,7 +49,7 @@ Create a file `production.ini`:
 <your.ip.address.here> ansible_user=<user>
 ```
 
-Copy `.env` to `.env.prod`, with the appropriate production credentials.
+Copy `.env.example` to `.env.prod`, with the appropriate production credentials.
 
 Make sure you have `python`, `pip`, `docker`, `docker-compose`, and `pipenv`
 available on your production server, then deploy using this command:

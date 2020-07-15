@@ -6,7 +6,11 @@ from handlers import ADD_CALLBACK_DATA, FILTER_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 BOOKS_PREFIX_HEADER = '<b>Books:</b> '
 # TODO: Change NO_BOOKS_STRING to give instructions on how to add a book
-NO_BOOKS_STRING = "You currently have no books!\nClick on 'Add Book' to get started."
+NO_BOOKS_STRING = """
+You currently have no books!
+Click on 'Add Book' to get started.
+For instructions on how to add a book, click /howtoadd.
+"""
 REFRESHED_NOTIFICATION = 'Refreshed!'
 
 REPLY_MARKUP_REFRESH_TEXT = '↻ Refresh'
