@@ -1,8 +1,8 @@
 from pathos.pools import ProcessPool
 
-from config import logger
-from models import Book, Availability, Filter
-from nlb import get_availability_info
+from app.config import logger
+from app.models import Book, Availability, Filter
+from app.nlb import get_availability_info
 
 CHECK_AVAILABLE_STRING = 'AVAILABLE'
 BOOK_ALREADY_EXISTS_FORMAT = 'Book with bid=%d and user_id=%d already exists'

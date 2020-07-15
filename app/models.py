@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, create_engine
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
-from config import conn_string
+from app.config import conn_string
 
 Base = declarative_base()
 

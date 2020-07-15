@@ -1,9 +1,9 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ChatAction
 from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Filters, CallbackQueryHandler
 
-from nlb import get_title_details, get_availability_info
-from db_helpers import is_book_present, add_book_availabilities
-from handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.nlb import get_title_details, get_availability_info
+from app.db_helpers import is_book_present, add_book_availabilities
+from app.handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 
 ADD_IN_PROGRESS = range(1)

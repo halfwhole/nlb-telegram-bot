@@ -1,17 +1,17 @@
 import psycopg2
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
-from config import token, logger
-from handlers.start_handler import start_handler
-from handlers.help_handler import help_handler
-from handlers.howtoadd_handler import howtoadd_handler
-from handlers.source_handler import source_handler
-from handlers.list_handler import list_handler, list_callback_handler, refresh_callback_handler
-from handlers.filter_handler import filter_callback_handler, filter_clear_callback_handler, filter_toggle_callback_handler
-from handlers.view_handler import view_handler
-from handlers.add_handler import add_handler
-from handlers.delete_handler import delete_callback_handler
-from handlers.fallback_handler import fallback_handler
+from app.config import token, logger
+from app.handlers.start_handler import start_handler
+from app.handlers.help_handler import help_handler
+from app.handlers.howtoadd_handler import howtoadd_handler
+from app.handlers.source_handler import source_handler
+from app.handlers.list_handler import list_handler, list_callback_handler, refresh_callback_handler
+from app.handlers.filter_handler import filter_callback_handler, filter_clear_callback_handler, filter_toggle_callback_handler
+from app.handlers.view_handler import view_handler
+from app.handlers.add_handler import add_handler
+from app.handlers.delete_handler import delete_callback_handler
+from app.handlers.fallback_handler import fallback_handler
 
 ## Error handling
 def error(update, context):

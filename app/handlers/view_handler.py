@@ -2,8 +2,8 @@ import itertools
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import MessageHandler, Filters
 
-from handlers import DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
-from db_helpers import is_book_present, get_book_title_details, get_book_availabilities
+from app.handlers import DELETE_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.db_helpers import is_book_present, get_book_title_details, get_book_availabilities
 
 BOOK_FORMAT = '<b>Title:</b> %s\n<b>Author:</b> %s'
 AVAILABILITY_LIBRARY_HEADER_FORMAT = '<b>%s</b>'
