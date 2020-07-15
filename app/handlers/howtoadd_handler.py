@@ -1,7 +1,7 @@
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ChatAction
 
-from app.handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.constants import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 HOWTOADD_MESSAGE = """
 1. Search for your book using the NLB catalogue at catalogue.nlb.gov.sg.

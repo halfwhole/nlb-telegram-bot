@@ -2,7 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Chat
 from telegram.ext import CommandHandler, CallbackQueryHandler
 
 from app.db_helpers import get_all_book_info, refresh_all_availabilities, get_filter_branch_names
-from app.handlers import ADD_CALLBACK_DATA, FILTER_CALLBACK_DATA, LIST_CALLBACK_DATA, REFRESH_CALLBACK_DATA
+from app.constants import ADD_CALLBACK_DATA, FILTER_CALLBACK_DATA, LIST_CALLBACK_DATA, REFRESH_CALLBACK_DATA
 
 BOOKS_PREFIX_HEADER = '<b>Books:</b> '
 NO_BOOKS_STRING = """

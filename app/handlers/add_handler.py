@@ -3,7 +3,7 @@ from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Fi
 
 from app.nlb import get_title_details, get_availability_info
 from app.db_helpers import is_book_present, add_book_availabilities
-from app.handlers import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
+from app.constants import ADD_CALLBACK_DATA, LIST_CALLBACK_DATA
 
 
 ADD_IN_PROGRESS = range(1)
@@ -55,6 +55,7 @@ def _add_in_progress_execute(bid, user_id, bot, chat_id, send_text_func):
 
     sent_message = send_text_func(PLEASE_WAIT_STRING)
     try:
+        ## TODO: somehow this 'typing' lasts longer than necessary, investigate?
         bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
         ## TODO: make this non-blocking, timeout?
         title_details = get_title_details(bid)
