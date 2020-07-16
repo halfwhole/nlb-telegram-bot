@@ -1,5 +1,8 @@
 LOG_START_MESSAGE = 'START: Bot is up and running'
+LOG_ADD_MESSAGE_FORMAT = 'ADD: user_id=%s, bid=%d'
+LOG_DELETE_MESSAGE_FORMAT = 'DELETE: user_id=%s, bid=%d'
 LOG_ERROR_MESSAGE_FORMAT = 'ERROR: Update "%s" caused error "%s"'
+LOG_REFRESH_MESSAGE_FORMAT = 'REFRESH: user_id=%d'
 
 ADD_CALLBACK_DATA = 'add'
 FILTER_CALLBACK_DATA = 'filter'
