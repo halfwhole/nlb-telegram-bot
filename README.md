@@ -1,8 +1,12 @@
 # nlb-telegram-bot
 
-#### Todos
+This Telegram bot tracks the availability of your selected NLB books.
+You may add or delete books, refresh their availabilities, and check if they
+are available at selected libraries.
 
-- TODO: Write a proper introductory section to this readme
+Try it out at [\@sgnlbbot](https://telegram.me/sgnlbbot).
+
+![Demonstration of the bot](./assets/demo.gif)
 
 ## Setting Up
 
@@ -25,11 +29,11 @@ Both `docker` and `docker-compose` will need to be installed. Run
 $ docker-compose up
 ```
 
-### Telegram configurations
+### Telegram configurations (optional)
 
 Set the following in Telegram with the BotFather:
 
-- Set the icon using `assets/icon.png`.
+- Set the bot icon with `assets/icon.png`.
 - Set the command list using `/setcommands` with the following text:
 
 ```
