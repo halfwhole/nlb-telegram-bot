@@ -49,7 +49,7 @@ source - Show further details about this project
 Create a file `production.ini`:
 
 ``` ini
-[[nlb-servers]]
+[nlb-servers]
 <your.ip.address.here> ansible_user=<user>
 ```
 
@@ -59,7 +59,7 @@ Make sure you have `python`, `pip`, `docker`, `docker-compose`, and `pipenv`
 available on your production server, then deploy using this command:
 
 ``` sh
-ansible-playbook playbook.yml -i production.ini
+$ ansible-playbook playbook.yml -i production.ini
 ```
 
 ## Developer Notes
